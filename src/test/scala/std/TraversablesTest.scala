@@ -5,6 +5,7 @@ package std
   */
 
 import org.scalatest._
+import Stream.cons
 
 
 object TraversablesTest  extends FlatSpec with Matchers {
@@ -70,6 +71,53 @@ object TraversablesTest  extends FlatSpec with Matchers {
     result.isInstanceOf[Array[Int]] should be(res0)
   }
 
+  /** `toStream` will convert any *Traversable* to a `Stream` which is a lazy list where elements are evaluated as they are needed.
+    */
+  def toStreamFunctionTraversables(res0: Boolean, res1: Stream[Int]) {
+    val list = List(4, 6, 7, 8, 9, 13, 14)
+    val result = list.toStream
+    result.isInstanceOf[Stream[_]] should be(res0)
+    (result take 3) should be(res1)
+  }
+
+
+  /** `take` will return the first number of elements given.
+    */
+  def takeFunctionTraversables(res0: List[Int]) {
+    val list = List(10, 19, 45, 1, 22)
+    println(list.take(3))
+    list.take(3) should be(res0)
+  }
+
+  /** `take` is used often with *Streams*, and *Streams* after all are *Traversable*.
+    */
+  def takeFunctionIITraversables(res0: List[Int]) {
+    def streamer(v: Int): Stream[Int] = cons(v, streamer(v + 1))
+    val a = streamer(2)
+
+    println((a take 3 toList))
+    (a take 3 toList) should be(res0)
+
+    println(((a drop 6) take 3))
+  }
+
+  /** `takeWhile` will continually accumulate elements until a predicate is no longer satisfied.
+    */
+  def takeWhileFunctionTraversables(res0: List[Int]) {
+    val list = List(87, 44, 5, 4, 200, 10, 39, 100)
+    println(list.takeWhile(_ < 100))
+    list.takeWhile(_ < 100) should be(res0)
+  }
+
+
+  /** `dropWhile` will continually drop elements until a predicate is no longer satisfied.
+    */
+  def dropWhileFunctionTraversables(res0: List[Int]) {
+    val list = List(87, 44, 5, 4, 200, 10, 39, 100)
+    list.dropWhile(_ < 100) should be(res0)
+  }
+
+
   def main(args: Array[String]): Unit = {
 
     topOfCollectionTraversables(7 , 8)
@@ -81,5 +129,13 @@ object TraversablesTest  extends FlatSpec with Matchers {
     flatMapFunctionTraversables(List(4, 8, 12, 16, 20, 24, 28, 32, 36, 40))
 
     toArrayFunctionTraversables(true)
+
+    toStreamFunctionTraversables(true, Stream(4, 6, 7))
+
+    takeFunctionTraversables(List(10, 19, 45))
+
+    takeFunctionIITraversables(List(2, 3, 4))
+
+    takeWhileFunctionTraversables(List(87, 44, 5, 4))
   }
 }
