@@ -4,14 +4,15 @@ version := "1.0"
 
 scalaVersion := "2.10.4"
 
-val algebraVersion = "0.2.0-SNAPSHOT"
-val catsVersion    = "0.1.0-SNAPSHOT"
+version := "0.2.5-SNAPSHOT"
 
-libraryDependencies ++=
-  Seq(
-    "org.scalatest" % "scalatest_2.10" % "2.0" % "test"
-    , "org.spire-math" %% "algebra" % algebraVersion
-    , "org.spire-math" %% "algebra-std" % algebraVersion
-    , "org.spire-math" %% "cats-core" % catsVersion
-    , "org.spire-math" %% "cats-std" % catsVersion
+resolvers ++= Seq(
+  Resolver.sonatypeRepo("snapshots"),
+  Resolver.sonatypeRepo("releases")
+)
+
+libraryDependencies ++= Seq(
+  "org.scalatest" % "scalatest_2.10" % "2.0",
+  "org.scala-exercises" %% "exercise-compiler" % version.value,
+  "org.scala-exercises" %% "definitions" % version.value
   )
