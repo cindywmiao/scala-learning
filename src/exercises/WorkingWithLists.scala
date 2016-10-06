@@ -1,44 +1,54 @@
-
 object WorkingWithLists{
+
 	/*Find the last element of a list.*/
 	def last(list : List[Int]) : Int = {
-		if(list == Nil || list.length == 0) return 0
-		val res = list(list.length - 1)
-		return res
+		list.last
 	}
 
 	/*Find the last but one element of a list.*/
 	def penultimate(list : List[Int]) : Int = {
-		if(list == Nil || list.length <= 1) return 0
-		val res = list(list.length - 2)
-		return res
+		if(list == Nil || list.length <= 1)
+			0
+		else
+			list(list.length - 2)
 	}
 
 	/*Find the Kth element of a list.
 	By convention, the first element in the list is element 0.*/
 	def nth(index : Int, list : List[Int]) : Int = {
-		if(list == Nil || list.length == 0 || list.length < index) return 0
-		val res = list(index)
-		return res
+		if(list == Nil || list.length == 0 || list.length < index) 
+			0
+		else 
+			list(index)
 	}
 
 	/*Find the number of elements of a list.*/
 	def length(list: List[Int]) : Int = {
-		return list.length
+		list.length
 	}
 
 	/*Reverse a list.*/
 	def reverse(list: List[Int]) : List[Int] = {
-		return list.reverse
+		list.reverse
 	}
 
 	/*Find out whether a list is a palindrome.*/
 	def isPalindrome(list : List[Int]) : Boolean = {
-		return list == list.reverse
+		list == list.reverse
 	}
 
 	/*Flatten a nested list structure.*/
-	
+	def flatten(ls: List[Any]): List[Any] = ls flatMap {
+  		case i: List[_] => flatten(i)
+  		case e => List(e)
+	}
+
+	/*Eliminate consecutive duplicates of list elements.
+	If a list contains repeated elements they should be replaced with a single copy of the element. The order of the elements should not be changed.*/
+	def compress(list : List[Char]) : List[Char] = {
+		list
+	}
+
 
 	def main(args: Array[String]): Unit = {
 		val list =  List(1, 1, 2, 3, 5, 8)
@@ -53,5 +63,6 @@ object WorkingWithLists{
 		println(isPalindrome(list2))
 
 		val list3 = List(List(1, 1), 2, List(3, List(5, 8)))
+		println(flatten(list3))
 	}
 }
