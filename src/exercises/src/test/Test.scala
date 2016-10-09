@@ -1,3 +1,5 @@
+package test
+
 //package exercices
 
 object Test{

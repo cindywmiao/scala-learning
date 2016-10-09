@@ -1,3 +1,5 @@
+package examples
+
 /*
  * Copyright (C) 2007-2010 Artima, Inc. All rights reserved.
  * 
