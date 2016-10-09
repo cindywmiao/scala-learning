@@ -1,4 +1,4 @@
-package WorkingWithLists
+package workingWithLists
 
 /**
   * Created by Cindy.Wang on 10/9/16.
