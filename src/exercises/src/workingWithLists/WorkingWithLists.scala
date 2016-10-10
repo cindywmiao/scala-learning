@@ -25,7 +25,6 @@ object WorkingWithLists{
 
 	def compress[A](list : List[A]) : List[A] = list.foldRight(List[A]()){ (h, r) => if(r.isEmpty || r.head != h) h::r else r }
 
-
   def pack[A](ls : List[A]): List[List[A]] = {
     if(ls.isEmpty) List(List())
     else{
@@ -62,6 +61,52 @@ object WorkingWithLists{
 
   def duplicate[A](ls : List[A]) : List[A] = ls flatMap {e => List(e, e)}
 
+  def dupulicateN[A](n: Int, ls: List[A]) : List[A] = ls flatMap {e => List.fill(n)(e)}
+
+  def drop[A](n: Int, ls: List[A]) : List[A] = ls.zipWithIndex filter { v => (v._2 + 1) % n != 0 } map { _._1 }
+
+  def split[A](n: Int, ls: List[A]) : (List[A], List[A]) = (ls.take(n), ls.drop(n))
+
+  def slice[A](m: Int, n: Int, ls: List[A]) : List[A] = ls.drop(m).take(n - m)
+
+  def rotate[A](n: Int, ls: List[A]) : List[A] = {
+    val nBounded = if (ls.isEmpty) 0 else n % ls.length
+    if(nBounded > 0) (ls drop nBounded) ::: (ls take nBounded)
+    else ls.drop(ls.length + nBounded) ::: (ls.take(ls.length + nBounded))
+  }
+
+  def removeAt[A](n: Int, ls: List[A]): (List[A], A) = (((ls take n) ::: (ls drop n + 1)), ls(n))
+
+  def insertAt[A](e: A, n: Int, ls: List[A]): List[A] = {
+    ls.splitAt(n) match {
+      case (pre, post) => pre ::: e :: post
+    }
+  }
+
+  def range(start : Int, end : Int): List[Int] = List.range(start, end + 1)
+
+  def randomSelect[A](n: Int, ls: List[A]): List[A] ={
+    if(n <= 0) Nil
+    else{
+      val (rest, e) = removeAt((new util.Random).nextInt(ls.length), ls)
+      e :: randomSelect(n - 1, rest)
+    }
+  }
+
+  def lotto(count : Int, max : Int) : List[Int] = randomSelect(count, List.range(1, max + 1))
+
+  def randomPermute[A](ls : List[A]) : List[A] = randomSelect(ls.length, ls)
+
+  def flatMapSublists[A,B](ls: List[A])(f: (List[A]) => List[B]): List[B] =
+    ls match {
+      case Nil => Nil
+      case sublist@(_ :: tail) => f(sublist) ::: flatMapSublists(tail)(f)
+    }
+
+  def combinations[A](n: Int, ls: List[A]): List[List[A]] =
+    if (n == 0) List(Nil)
+    else flatMapSublists(ls) { sl => combinations(n - 1, sl.tail) map {sl.head :: _} }
+
 	def main(args: Array[String]): Unit = {
 //		val list =  List(1, 1, 2, 3, 5, 8)
 //		println(penultimate(list))
@@ -76,17 +121,36 @@ object WorkingWithLists{
 //		val list3 = List(List(1, 1), 2, List(3, List(5, 8)))
 //		println(flatten(list3))
 
-    val list4 = List('a, 'a, 'a, 'a, 'b, 'c, 'c, 'a, 'a, 'd, 'e, 'e, 'e, 'e)
+//    val list4 = List('a, 'a, 'a, 'a, 'b, 'c, 'c, 'a, 'a, 'd, 'e, 'e, 'e, 'e)
 //    println(compress(list4))
 //    println(pack(list4))
 //    println(encode(list4))
 //    println(encode2(list4))
 //    println(encodeModified(list4))
 
-    val list5 = List((4, 'a), (1, 'b), (2, 'c), (2, 'a), (1, 'd), (4, 'e))
-    println(decode(list5))
+//    val list5 = List((4, 'a), (1, 'b), (2, 'c), (2, 'a), (1, 'd), (4, 'e))
+//    println(decode(list5))
+//    println(encodeDirect(list4))
+//
+//    val list6 = List('a, 'b, 'c, 'c, 'd)
+//    println(duplicate(list6))
+//    println(dupulicateN(3, list6))
+//
+//    val list7 = List('a, 'b, 'c, 'd, 'e, 'f, 'g, 'h, 'i, 'j, 'k)
+//    println(drop(3, list7))
+//    println(split(3, list7))
+//    println(slice(3, 7, list7))
+//    println(slice2(3, 7, list7))
+//    println(rotate(3, list7))
+//    println(rotate(-2, list7))
 
-    println(encodeDirect(list4))
+    val list8 = List('a, 'b, 'c, 'd)
+    println(removeAt(1, list8))
+    println(insertAt('new, 1, list8))
 
+    println(range(4,7))
+    println(lotto(6, 47))
+    println(randomPermute(list8))
+    println(combinations(3, list8))
 	}
 }
