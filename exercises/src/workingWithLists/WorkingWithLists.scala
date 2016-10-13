@@ -107,6 +107,28 @@ object WorkingWithLists{
     if (n == 0) List(Nil)
     else flatMapSublists(ls) { sl => combinations(n - 1, sl.tail) map {sl.head :: _} }
 
+  def group3[A](ls: List[A]): List[List[List[A]]] =
+    for {
+      a <- combinations(2, ls)
+      noA = ls -- a
+      b <- combinations(3, noA)
+    } yield List(a, b, noA -- b)
+
+  def group[A](ns: List[Int], ls: List[A]): List[List[List[A]]] = ns match {
+    case Nil     => List(Nil)
+    case n :: ns => combinations(n, ls) flatMap { c =>
+      group(ns, ls -- c) map {c :: _}
+    }
+  }
+
+  def lsort[A](ls: List[List[A]]): List[List[A]] =
+    ls sort { _.length < _.length }
+
+  def lsortFreq[A](ls: List[List[A]]): List[List[A]] = {
+    val freqs = Map(encode(ls map { _.length } sort { _ < _ }) map { _.swap }:_*)
+    ls sort { (e1, e2) => freqs(e1.length) < freqs(e2.length) }
+  }
+
 	def main(args: Array[String]): Unit = {
 //		val list =  List(1, 1, 2, 3, 5, 8)
 //		println(penultimate(list))
@@ -152,5 +174,8 @@ object WorkingWithLists{
     println(lotto(6, 47))
     println(randomPermute(list8))
     println(combinations(3, list8))
+
+    val list9 = List("Aldo", "Beat", "Carla", "David", "Evi", "Flip", "Gary", "Hugo", "Ida")
+    println(group3(list9))
 	}
 }
