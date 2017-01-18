@@ -35,4 +35,3 @@ object Length {
   // More pure functional solution, with folds.
   def lengthFunctional[A](ls: List[A]): Int = ls.foldLeft(0) { (c, _) => c + 1 }
 }
-}

@@ -1,4 +1,4 @@
-package logicAndCodes
+//package logicAndCodes
 
 /**
   * Created by Cindy.Wang on 10/13/16.
@@ -15,5 +15,15 @@ package logicAndCodes
 //See if you can use memoization to make the function more efficient.
 object GreyCode {
 
+  def grey(n : Int) : List[String] = {
+    if(n == 0) List("")
+    else{
+      val lower = grey(n - 1)
+      (lower map {"0" + _}) ::: (lower.reverse map {"1" + _})
+    }
+  }
 
+  def main(args : Array[String]) : Unit = {
+    println(grey(3))
+  }
 }
